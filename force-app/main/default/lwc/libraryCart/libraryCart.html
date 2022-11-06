@@ -1,0 +1,71 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <template if:true={ShowFirstPage}>
+    <div if:true={ShowFirstPage}>
+      <template if:true={SpinnerOn}>
+        <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+      </template>
+      <lightning-layout>
+        <lightning-layout-item size="2"></lightning-layout-item>
+        <lightning-layout-item size="4">
+          <lightning-combobox name="Contact"  value={value} placeholder="Select any Student"
+            options={AllContactFromApex} onchange={handleTypeChange} style="width: 220px;">
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="3">
+          <lightning-input type="text" onchange={handleSearch} class="searchCmp"
+            placeholder="Search Book..." style="width:350px;"></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item>
+          <br>
+          <lightning-button icon-name="utility:search" variant="brand" label="Search" icon-position="right"
+            onclick={handleClickSearch} class="slds-var-m-left_x-small">
+          </lightning-button>
+        </lightning-layout-item>
+      </lightning-layout>
+
+
+      <template for:each={initialRecords} for:item="Book">
+
+        <c-book-tile onquantitychange={HandleChildChange} onquantityremoval={handleChildRemoval}
+          class="slds-show slds-is-relative" key={Book.Id} book={Book} data-id={Book.Id}
+          style="margin-top:3%; margin-bottom:3% ; margin-left: 200px; margin-right: 200px;">
+        </c-book-tile>
+      </template>
+      <lightning-layout>
+        <lightning-layout-item size="5">
+          <h2><b if:true={showBookCount}>Showing {ShowingRecords} of {NumberOfTotalBooks} Books</b></h2>
+        </lightning-layout-item>
+
+        <lightning-layout-item>
+          <lightning-button if:true={showmoreButton} label="Show more" icon-name="utility:switch" icon-position="right" variant="brand" onclick={ShowMoreRecords}>
+          </lightning-button>
+        </lightning-layout-item>
+      </lightning-layout>
+      <lightning-layout>
+        <lightning-layout-item>
+          <br><br>
+          <div class="slds-box  slds-theme_shade" style="width:250px; margin-left:500px">
+            <p>Total Selected Items : {TotalQuantity}</p>
+            <br>
+            <h1>TOTAL PRICE : {totalPrice}</h1>
+          </div>
+        </lightning-layout-item>
+
+        <lightning-layout-item>
+          <div class="slds-var-p-left_medium">
+            <br><br><br><br>
+            <lightning-button label="Go To Cart" variant="brand" icon-name="utility:cart" onclick={goToCart}>
+            </lightning-button>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+      <br><br>
+    </div>
+  </template>
+<template if:false={ShowFirstPage}>
+  <c-cart-component  booklist={BookList} totalprice={totalPrice} totalquantity={TotalQuantity} selectedcontact={SelectedContact} class="slds-show slds-is-relative">
+
+  </c-cart-component>
+</template>
+</template>

@@ -1,0 +1,46 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <template if:true={book}>
+    <lightning-card class="slds-text-align_center slds-grid_vertical-align-center">
+      <slot name="title" class="widthExpanded">
+        <div class="slds-text-heading_medium widthExpanded" onclick={HandleNav}><b>{book.Name}</b></div>
+      </slot>     
+      <p class="slds-text-align_center" style="margin-top: 20px ;">{book.Description__c}</p>
+      <div if:true={OutofStock} class="slds-text-color_error"><b>Out Of stock</b></div>
+      <div class="slds-text-align_right">
+        <lightning-layout>
+          <lightning-layout-item size="2" padding="horizontal-small">
+            <img src={imageURL} alt="Book Image" onclick={HandleNav} height="300px" width="200px" />
+          </lightning-layout-item> 
+          <lightning-layout-item size="5" padding="horizontal-small">
+            <div class="slds-p-top_xx-large">
+              <div class="slds-text-heading_small slds-p-top_xx-large"><b>Price: {book.UnitPrice__c}$</b></div>
+            </div>
+          </lightning-layout-item>
+          <lightning-layout-item size="2" padding="horizontal-small" class="slds-col_bump-bottom">
+            <lightning-combobox  value={value} placeholder='0' options={QuantityOptions}
+              onchange={QuantityChanged} read-only={DisableCombobox} style="width:70px; margin-left: 210px;"
+              class="quantCmp">
+            </lightning-combobox>
+          </lightning-layout-item>
+          <lightning-layout-item size="1" padding="horizontal-small">
+            <br>
+            <lightning-button icon-name="utility:add" value={QuantAdd} variant="brand" onclick={HandleAdd} name={Add}
+              class="slds-text-align_right" style="margin-left: 110px;" disabled={showAddButton}>
+
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="1" padding="horizontal-small">
+            <br>
+            <lightning-button if:true={ShowDeleteButton} variant="destructive" icon-name="utility:delete"
+             onclick={RemoveChildBook} name={Delete} style="margin-left: 80px;">
+            </lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <template if:false={book}>
+        <p>No Books are available.</p>
+      </template>
+    </lightning-card>
+  </template>
+</template>
