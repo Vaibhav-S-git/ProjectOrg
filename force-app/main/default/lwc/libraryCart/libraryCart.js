@@ -141,7 +141,7 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
     this.TotalQuantity = this.TotalQuantity + childEvent.detail.quantityFromChild;
 
     let BookVar = { 'sobjectType': 'BookOrder__c' };
-    console.log('book id is ',childEvent.detail.BookId);
+    
     BookVar.Book = childEvent.detail.BookId;
     BookVar.Name = childEvent.detail.BookName;
     BookVar.Quantity = childEvent.detail.quantityFromChild;
@@ -210,8 +210,6 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
     if (!(this.SelectedContact == ' ') && this.TotalQuantity != 0) {
       this.toastcall('Success', 'Successfully added to cart', 'Success');
 
-      console.log('first page done');
-      console.log('in parent it is', this.BookList);
       this.ShowFirstPage = false;
       //call card component 
     }

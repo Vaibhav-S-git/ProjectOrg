@@ -51,7 +51,6 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   @api ButtonTitle = 'Confirm Order';
   @api OrderId = '';
 
-
   handleRowAction() { }
   connectedCallback() {
     this.ListOfBooks = JSON.parse(JSON.stringify(this.booklist));
@@ -62,13 +61,12 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   }
 
   handleRowAction(event) {
-
     const row = event.detail.row;
     let bool = true;
     this.ListOfBooks.forEach(element => {
       if (element.availableBoks < row.Quantity) {
         bool = false;
-        row.Quantity=row.totalPrice / row.UnitPrice;
+        row.Quantity = row.totalPrice / row.UnitPrice;
         this.toastcall('error', 'Pick Less quantity', 'error');
       }
     });
@@ -82,14 +80,20 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
           this.totalprice -= row.totalPrice;
 
           row.totalPrice = row.Quantity * row.UnitPrice;
-          console.log(' row.Quantity', row.Quantity, 'row.totalPrice', row.totalPrice);
-
           this.totalquantity += row.Quantity;
           this.totalprice += row.totalPrice;
         }
 
       });
     }
+    // this.ListOfBooks.forEach(element => {
+    //   if (element.Book == row.Book) {
+    //     console.log('row price=', row.totalPrice);
+        
+    //     element.totalPrice = row.totalPrice;
+    //   }
+    // });
+    // this.RenderTable = true;
   }
 
   picklistChanged(childEvent) {
@@ -103,17 +107,15 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
     this.changedArray.forEach(element => {
       if (element.Book == newVal.Book) {
         element.Quantity = newVal.Quantity;
-
       }
     });
-    console.log('array after adding element', this.changedArray);
+    
   }
   OnConfirmation() {
     this.SpinnerOn = true;
 
     console.log(this.SelectedContact);
     let con = this.selectedcontact;
-    console.log('conid is ', con);
     CreateRecordsLwc({ data: this.ListOfBooks, conId: con })
       .then(result => {
         // Clear the user enter values

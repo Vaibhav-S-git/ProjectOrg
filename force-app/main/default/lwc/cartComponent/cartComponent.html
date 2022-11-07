@@ -1,34 +1,26 @@
 <!-- sldsValidatorIgnore -->
 <template>
   <lightning-card>
-  <h1 slot="title">Library Management</h1>
-      <!-- <lightning-datatable  data={ListOfBooks} suppress-bottom-bar columns={CartColumns}
-        onrowaction={handleRowAction} hide-checkbox-column show-row-number-column>
-      </lightning-datatable> -->
-      <c-data-table-comp
-      key-field="Id"
-      data={ListOfBooks}   
-      columns={CartColumns} 
-      onpicklistchanged={picklistChanged}
-      onrowaction={handleRowAction}
-      hide-checkbox-column>>  
-      </c-data-table-comp>
+    <h1 slot="title">Library Management</h1>
+    <c-data-table-comp enable-infinite-loading  key-field="Id" data={ListOfBooks} columns={CartColumns} onpicklistchanged={picklistChanged}
+      onrowaction={handleRowAction} hide-checkbox-column>>
+    </c-data-table-comp>
 
-      <br><br>
-      <div class="slds-box  slds-theme_shade" style="width:250px; margin-left:500px">
-        <p>Added Books : {totalquantity}</p>
-        <br>
-        <h1>TOTAL PRICE : {totalprice}</h1>
-      </div>
+    <br><br>
+    <div class="slds-box  slds-theme_shade" style="width:250px; margin-left:500px">
+      <p>Added Books : {totalquantity}</p>
+      <br>
+      <h1>TOTAL PRICE : {totalprice}</h1>
+    </div>
 
-      <div class="slds-var-p-left_medium">
-        <br>
-        <lightning-button label={ButtonTitle} variant='success' onclick={OnConfirmation} 
-          style="width:250px; margin-left:520px">
-        </lightning-button>
-      </div>
-      <template if:true={SpinnerOn}>
-        <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
-      </template>
-    </lightning-card>
+    <div class="slds-var-p-left_medium">
+      <br>
+      <lightning-button label={ButtonTitle} variant='success' onclick={OnConfirmation}
+        style="width:250px; margin-left:520px">
+      </lightning-button>
+    </div>
+    <template if:true={SpinnerOn}>
+      <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+    </template>
+  </lightning-card>
 </template>
