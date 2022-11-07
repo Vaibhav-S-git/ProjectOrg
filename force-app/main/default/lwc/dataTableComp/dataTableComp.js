@@ -5,7 +5,7 @@ export default class DataTableComp extends LightningDatatable  {
     picklistColumn: {
         template: picklistColumn,
         standardCellLayout: true,
-        typeAttributes: ['label', 'placeholder', 'options', 'value', 'context', 'variant','name']
+        typeAttributes: ['label', 'placeholder', 'options', 'value','name','id']
     }
 };
 }

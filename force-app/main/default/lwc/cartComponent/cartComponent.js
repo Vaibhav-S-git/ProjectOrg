@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import CreateRecordsLwc from '@salesforce/apex/LibraryCartHelper.CreateRecordsLwc';
+import SystemModstamp from '@salesforce/schema/Account.SystemModstamp';
 const actions = [
   { label: 'Add', name: 'Add' }
 ];
@@ -10,7 +11,9 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   CartColumns = [
     { label: 'Name', fieldName: 'Name' },
     {
-      label: 'Quantity', fieldName: 'Quantity', editable: true, type: 'picklistColumn', typeAttributes: {
+      label: 'Quantity', fieldName: 'Quantity', type: 'picklistColumn', typeAttributes: {
+        value: { fieldName: 'Quantity' },
+        id: { fieldName: 'Book' },
         options: [
           { label: '1', value: '1' },
           { label: '2', value: '2' },
@@ -33,6 +36,7 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   ];
   //from parent
   @api booklist = [];
+
   @api totalquantity;
   @api totalprice;
   @api selectedcontact;
@@ -43,7 +47,7 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   @track disableButton = true;
   @api BookListUpdated;
 
-
+  @api changedArray = [];
   @api SpinnerOn = false;
   @api ButtonTitle = 'Confirm Order';
   @api OrderId = '';
@@ -52,40 +56,66 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   handleRowAction() { }
   connectedCallback() {
     this.ListOfBooks = JSON.parse(JSON.stringify(this.booklist));
-    console.log('list data from parent', JSON.parse(JSON.stringify(this.booklist)));
+
+    this.changedArray = this.ListOfBooks;
+
+
   }
 
-  // handleRowAction(event) {
+  handleRowAction(event) {
 
-  //   const row = event.detail.row;
-  //   let temp = true;
-  //   this.ListOfBooks.forEach(element => {
-  //     if (element.Book == row.Book__c)
-  //       temp = false;
-  //   });
-  //   if (temp) {
-  //     let BookVar = { 'sobjectType': 'BookOrder__c' };
-  //     BookVar.Book = row.Book__c;
-  //     BookVar.Name = row.Name;
-  //     BookVar.Quantity = row.Quantity__C;
-  //     BookVar.UnitPrice = row.UnitPrice__c;
-  //     BookVar.totalPrice = row.Quantity__C * row.UnitPrice__c;
+    const row = event.detail.row;
+    let bool = true;
+    this.ListOfBooks.forEach(element => {
+      if (element.availableBoks < row.Quantity) {
+        bool = false;
+        row.Quantity=row.totalPrice / row.UnitPrice;
+        this.toastcall('error', 'Pick Less quantity', 'error');
+      }
+    });
+    if (bool) {
+      this.changedArray.forEach(element => {
 
-  //     this.TotalQuantity += row.Quantity__C;
-  //     this.totalPrice += row.totalPrice;
-  //     // this.BookListUpdated.push(BookVar);
-  //   }
-  // }
-  handleSave() { }
-  handleCancel() { }
+        if (element.Book == row.Book) {
 
+          let temp = row.totalPrice / row.UnitPrice;
+          this.totalquantity -= temp;
+          this.totalprice -= row.totalPrice;
+
+          row.totalPrice = row.Quantity * row.UnitPrice;
+          console.log(' row.Quantity', row.Quantity, 'row.totalPrice', row.totalPrice);
+
+          this.totalquantity += row.Quantity;
+          this.totalprice += row.totalPrice;
+        }
+
+      });
+    }
+  }
+
+  picklistChanged(childEvent) {
+
+    let newVal = { 'sobjectType': 'BookOrder__c' };
+
+    newVal.Book = childEvent.detail.Bookid;
+    newVal.Quantity = childEvent.detail.Quant;
+
+
+    this.changedArray.forEach(element => {
+      if (element.Book == newVal.Book) {
+        element.Quantity = newVal.Quantity;
+
+      }
+    });
+    console.log('array after adding element', this.changedArray);
+  }
   OnConfirmation() {
     this.SpinnerOn = true;
 
     console.log(this.SelectedContact);
-    let con=this.selectedcontact;
-    console.log('conid is ',con);
-    CreateRecordsLwc({ data: this.ListOfBooks, conId:con})
+    let con = this.selectedcontact;
+    console.log('conid is ', con);
+    CreateRecordsLwc({ data: this.ListOfBooks, conId: con })
       .then(result => {
         // Clear the user enter values
         this.OrderId = result;
