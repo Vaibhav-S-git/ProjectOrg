@@ -153,7 +153,7 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
   }
 
   handleChildRemoval(Removevent) {
-    console.log(Removevent.detail.TotalPriceFromChild,Removevent.detail.quantityFromChild);
+    
     this.totalPrice -= Removevent.detail.TotalPriceFromChild;
     this.TotalQuantity -= Removevent.detail.quantityFromChild;
     this.BookList = this.BookList.filter(function (BookVar) {

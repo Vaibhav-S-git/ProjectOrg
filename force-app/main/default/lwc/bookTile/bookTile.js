@@ -88,7 +88,7 @@ export default class BookTile extends NavigationMixin(LightningElement) {
         quantityFromChild: this.Quant,
         TotalPriceFromChild: this.TotalPrice,
         BookName: this.book.Name,
-        avalialeBooks:this.book.Quantity__c
+        avaliableBooks:this.book.Quantity__c
       }
     }
     )

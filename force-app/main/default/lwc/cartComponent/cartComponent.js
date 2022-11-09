@@ -40,7 +40,7 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   @api totalprice;
   @api selectedcontact;
 
-  @api ListOfBooks = [];
+  @track ListOfBooks = [];
 
 
   @track disableButton = true;
@@ -50,21 +50,18 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   @api SpinnerOn = false;
   @api ButtonTitle = 'Confirm Order';
   @api OrderId = '';
-
-  handleRowAction() { }
   connectedCallback() {
     this.ListOfBooks = JSON.parse(JSON.stringify(this.booklist));
-
     this.changedArray = this.ListOfBooks;
-
-
   }
 
   handleRowAction(event) {
     const row = event.detail.row;
     let bool = true;
-    this.ListOfBooks.forEach(element => {
-      if (element.availableBoks < row.Quantity) {
+    let copyList = this.ListOfBooks;
+
+    copyList.forEach(element => {
+      if (element.avaliableBooks < row.Quantity) {
         bool = false;
         row.Quantity = row.totalPrice / row.UnitPrice;
         this.toastcall('error', 'Pick Less quantity', 'error');
@@ -75,25 +72,18 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
 
         if (element.Book == row.Book) {
 
-          let temp = row.totalPrice / row.UnitPrice;
-          this.totalquantity -= temp;
+          this.totalquantity -= row.totalPrice / row.UnitPrice;;
           this.totalprice -= row.totalPrice;
 
           row.totalPrice = row.Quantity * row.UnitPrice;
+          element.Quantity = row.Quantity;
           this.totalquantity += row.Quantity;
-          this.totalprice += row.totalPrice;
+          this.totalprice += row.Quantity * row.UnitPrice;
         }
-
       });
+
+      this.ListOfBooks = [...copyList];
     }
-    // this.ListOfBooks.forEach(element => {
-    //   if (element.Book == row.Book) {
-    //     console.log('row price=', row.totalPrice);
-        
-    //     element.totalPrice = row.totalPrice;
-    //   }
-    // });
-    // this.RenderTable = true;
   }
 
   picklistChanged(childEvent) {
@@ -109,12 +99,11 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
         element.Quantity = newVal.Quantity;
       }
     });
-    
+
   }
   OnConfirmation() {
     this.SpinnerOn = true;
 
-    console.log(this.SelectedContact);
     let con = this.selectedcontact;
     CreateRecordsLwc({ data: this.ListOfBooks, conId: con })
       .then(result => {

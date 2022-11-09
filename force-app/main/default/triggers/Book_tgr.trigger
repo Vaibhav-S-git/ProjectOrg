@@ -4,7 +4,7 @@ trigger Book_tgr on Book__c (before insert,before update,before delete,
 {
     switch on Trigger.Operationtype{
         when BEFORE_UPDATE{
-            LibraryCartHelper.BEFORE_UPDATE(Trigger.new,trigger.oldMap);
+            Book_tgr_handler.BEFORE_UPDATE(Trigger.new,trigger.oldMap);
         }
     }
 }

@@ -39,20 +39,22 @@ public class LibraryCartHelper_Test {
     }
     @istest
     public static void SearchBooksByName_test(){
-        Book__C book1=new book__C(Name='Bname1',Code__c='b-4500',IsActive__c=true,UnitPrice__c=20);
-        Book__C book2=new book__C(Name='Bname2',Code__c='b-4600',IsActive__c=false,UnitPrice__c=20);
-        Book__C book3=new book__C(Name='Bname3',Code__c='b-4700',IsActive__c=true,UnitPrice__c=20);
+        Book__C book1=new book__C(Name='Bname1',Code__c='b-4500',IsActive__c=true,UnitPrice__c=20,Description__c='t');
+        Book__C book2=new book__C(Name='Bname2',Code__c='b-4600',IsActive__c=false,UnitPrice__c=20,Description__c='t');
+        Book__C book3=new book__C(Name='Bname3',Code__c='b-4700',IsActive__c=true,UnitPrice__c=20,Description__c='t');
+        Book__C book4=new book__C(Name='Bname4',Code__c='b-4800',IsActive__c=true,UnitPrice__c=20,Description__c='hi this is test Bname1 is the word');
         insert book1;
         insert book2;
         insert book3;
+        insert book4;
         String searchText='Bname';
         test.startTest();
         List<Book__c> BookList=LibraryCartHelper.SearchBooksByName(searchText);
         searchText='Bname1';
         List<Book__c> BookList2=LibraryCartHelper.SearchBooksByName(searchText);
         test.stopTest();
-        system.assertEquals(2, BookList.size());
-        system.assertEquals(1, BookList2.size());
+        system.assertEquals(3, BookList.size());
+        system.assertEquals(2, BookList2.size());
     }
     @istest
     public static void GetThreeBooks_test(){

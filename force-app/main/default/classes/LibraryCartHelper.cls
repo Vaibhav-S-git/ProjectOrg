@@ -24,12 +24,18 @@ public with sharing class LibraryCartHelper {
     }
     @AuraEnabled
     public static list<Book__C> SearchBooksByName(String searchKey){
-        String bookitem = '%' + searchKey + '%';
-        return[SELECT id,Name,Description__c,UnitPrice__c,Quantity__c 
+          List<Book__c> bookListReturn = new List<Book__c>();
+        List<Book__c> bookList = new List<Book__c>( [SELECT id,Name,Description__c,UnitPrice__c,Quantity__c 
                FROM Book__C 
-               WHERE Name LIKE :bookitem 
-               AND IsActive__c= true
-               ORDER BY Name ASC];
+               WHERE IsActive__c= true
+               ORDER BY Name ASC]);
+              for (Book__c book :bookList ) {
+                if (book.Description__c.contains(searchKey) || book.Name.contains(searchKey)) {
+                    bookListReturn.add(book);
+                }
+              }
+              return bookListReturn;
+              
     }    
     @AuraEnabled(cacheable=true)
     public static list<Book__C> GetThreeBooks(integer OffsetVal){
@@ -83,12 +89,5 @@ public with sharing class LibraryCartHelper {
         public integer Quantity;
         @AuraEnabled
         public integer UnitPrice;
-    }
-    public static void BEFORE_UPDATE(list<book__c> bookList,map<id,book__c> bookMap){
-        for(Book__c book:bookList){
-            if(book.SoldBooksCount__c!=bookMap.get(book.id).SoldBooksCount__c){
-                book.Quantity__c-=(book.SoldBooksCount__c-bookMap.get(book.id).SoldBooksCount__c);
-            }
-        }
-    } 
+    }   
 }

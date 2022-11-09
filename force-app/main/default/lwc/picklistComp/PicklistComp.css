@@ -1,4 +1,4 @@
-/* .picklist-section{
+.picklist-section{
   margin-top: -1rem;
   margin-left: -0.5rem;
   position: absolute !important;
@@ -11,4 +11,4 @@
   max-height: 120px;
   max-width: fit-content;
   overflow: auto;
-} */
+}

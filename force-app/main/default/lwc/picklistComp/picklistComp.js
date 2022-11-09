@@ -8,10 +8,11 @@ export default class PicklistComp extends LightningElement {
   @api label;
   @api id;
   @track showPicklist = false;
+
   connectedCallback() {
 
     this.id = this.id.slice(0, -4);
-    console.log('id is', this.id);
+
 
     console.log(this.value);
     this.placeholder = this.value;
@@ -20,9 +21,6 @@ export default class PicklistComp extends LightningElement {
   handleChange(event) {
 
     this.value = event.detail.value;
-
-    console.log('on change book Id is', this.id);
-
     const childEvent = new CustomEvent('picklistchanged', {
       bubbles: true,
       composed: true,
@@ -35,5 +33,4 @@ export default class PicklistComp extends LightningElement {
     this.dispatchEvent(childEvent);
 
   }
-
 }

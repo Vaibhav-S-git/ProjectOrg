@@ -2,7 +2,8 @@
 <template>
   <lightning-card>
     <h1 slot="title">Library Management</h1>
-    <c-data-table-comp enable-infinite-loading  key-field="Id" data={ListOfBooks} columns={CartColumns} onpicklistchanged={picklistChanged}
+    <c-data-table-comp 
+      key-field="Id" data={ListOfBooks} columns={CartColumns} onpicklistchanged={picklistChanged}
       onrowaction={handleRowAction} hide-checkbox-column>>
     </c-data-table-comp>
 
