@@ -17,7 +17,7 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
   @api AllContactFromApex;
   @api SelectedContact = ' ';
 
-  @api searchValue;
+  @api searchValue = '';
 
   @api initialRecords;
   @api NumberOfTotalBooks = 0;
@@ -141,19 +141,19 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
     this.TotalQuantity = this.TotalQuantity + childEvent.detail.quantityFromChild;
 
     let BookVar = { 'sobjectType': 'BookOrder__c' };
-    
+
     BookVar.Book = childEvent.detail.BookId;
     BookVar.Name = childEvent.detail.BookName;
     BookVar.Quantity = childEvent.detail.quantityFromChild;
     BookVar.UnitPrice = childEvent.detail.UnitPrice;
     BookVar.totalPrice = childEvent.detail.TotalPriceFromChild;
-    BookVar.availableBoks=childEvent.detail.avalialeBooks;
+    BookVar.availableBoks = childEvent.detail.avalialeBooks;
     this.BookList.push(BookVar);
 
   }
 
   handleChildRemoval(Removevent) {
-    
+
     this.totalPrice -= Removevent.detail.TotalPriceFromChild;
     this.TotalQuantity -= Removevent.detail.quantityFromChild;
     this.BookList = this.BookList.filter(function (BookVar) {
