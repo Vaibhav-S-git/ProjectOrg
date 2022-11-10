@@ -10,7 +10,7 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   CartColumns = [
     { label: 'Name', fieldName: 'Name' },
     {
-      label: 'Quantity', fieldName: 'Quantity', type: 'picklistColumn', typeAttributes: {
+      label: 'Quantity', type: 'picklistColumn', typeAttributes: {
         value: { fieldName: 'Quantity' },
         id: { fieldName: 'Book' },
         options: [
@@ -56,50 +56,51 @@ export default class CartComponent extends NavigationMixin(LightningElement) {
   }
 
   handleRowAction(event) {
-    const row = event.detail.row;
+    let row = event.detail.row;
     let bool = true;
-    let copyList = this.ListOfBooks;
-
+  
+    let copyList = [...this.changedArray];
+   
     copyList.forEach(element => {
-      if (element.avaliableBooks < row.Quantity) {
+
+      if (element.avaliableBooks < row.Quantity && element.Book==row.Book) {
         bool = false;
         row.Quantity = row.totalPrice / row.UnitPrice;
         this.toastcall('error', 'Pick Less quantity', 'error');
       }
     });
     if (bool) {
-      this.changedArray.forEach(element => {
+      copyList.forEach(element => {
 
         if (element.Book == row.Book) {
 
           this.totalquantity -= row.totalPrice / row.UnitPrice;;
           this.totalprice -= row.totalPrice;
-
-          row.totalPrice = row.Quantity * row.UnitPrice;
-          element.Quantity = row.Quantity;
-          this.totalquantity += row.Quantity;
-          this.totalprice += row.Quantity * row.UnitPrice;
+          element.totalPrice = parseInt(row.Quantity) * parseInt(row.UnitPrice);
+          this.totalquantity += parseInt(row.Quantity);
+          this.totalprice += parseInt(row.Quantity) * parseInt(row.UnitPrice);
+          element.Quantity = ""+row.Quantity;
         }
       });
-
+     
       this.ListOfBooks = [...copyList];
+     
     }
   }
 
   picklistChanged(childEvent) {
 
-    let newVal = { 'sobjectType': 'BookOrder__c' };
-
-    newVal.Book = childEvent.detail.Bookid;
-    newVal.Quantity = childEvent.detail.Quant;
-
+    let quantityFromChild= childEvent.detail.Quant;
+    let bookFromChild=childEvent.detail.Bookid;
 
     this.changedArray.forEach(element => {
-      if (element.Book == newVal.Book) {
-        element.Quantity = newVal.Quantity;
+      if (element.Book == bookFromChild) {
+        
+        element.Quantity = quantityFromChild;
       }
+   
     });
-
+    // this.ListOfBooks = this.changedArray;
   }
   OnConfirmation() {
     this.SpinnerOn = true;

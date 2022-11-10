@@ -148,7 +148,7 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
     BookVar.Quantity = childEvent.detail.quantityFromChild;
     BookVar.UnitPrice = childEvent.detail.UnitPrice;
     BookVar.totalPrice = childEvent.detail.TotalPriceFromChild;
-    BookVar.availableBoks = childEvent.detail.avalialeBooks;
+    BookVar.avaliableBooks = childEvent.detail.avaliableBooks;
     this.BookList.push(BookVar);
 
   }
