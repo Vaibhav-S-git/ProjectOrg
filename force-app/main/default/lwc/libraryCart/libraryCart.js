@@ -115,6 +115,7 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
     if (this.searchValue.length > 1) {
       searchCmp.setCustomValidity("");
       searchCmp.reportValidity();
+      
       SearchBooksByName({ searchKey: this.searchValue })
         .then((result) => {
 
