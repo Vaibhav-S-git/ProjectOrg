@@ -9,7 +9,6 @@ import { NavigationMixin } from 'lightning/navigation';
 import getAllContact from '@salesforce/apex/LibraryCartHelper.getAllContact';
 import getAllBooks from '@salesforce/apex/LibraryCartHelper.getAllBooks';
 import SearchBooksByName from '@salesforce/apex/LibraryCartHelper.SearchBooksByName';
-import GetThreeBooks from '@salesforce/apex/LibraryCartHelper.GetThreeBooks';
 import GetNBooks from '@salesforce/apex/LibraryCartHelper.GetNBooks';
 
 export default class LibraryCart extends NavigationMixin(LightningElement) {
@@ -60,30 +59,30 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
   }
 
   @wire(getAllBooks)
-  wiredBooks({ data }) {
+  wiredBooks({ data,error }) {
     if (data) {
       this.data = data;
       this.NumberOfTotalBooks = data.length;  //storing number of all activated books
       this.error = undefined;
     }
-  }
-  // getting first three books
-
-  connectedCallback() {
-    GetThreeBooks({ OffsetVal: this.ShowingRecords - 3 })
-      .then((result) => {
-        this.initialRecords = result;
-        console.log(this.initialRecords);
-        this.SpinnerOn = false;
-        this.error = undefined;
-      })
-      .catch((error) => {
-        this.error = error;
-        this.initialRecords = undefined;
-      });
+    else if(error){
+      console.error('check error here', error);
+    }
   }
 
-  // loading three more books if available
+  @wire(GetNBooks,{ Lim:'$ShowingRecords'})
+  BookByNumber({ data,error }) {
+    if (data) {
+      this.SpinnerOn = false;
+      this.initialRecords = data;  
+      this.error = undefined;
+    }
+    else if(error){
+      console.error('check error here', error);
+    }
+  }
+ 
+ 
 
   handleSearch(event) {
     let searchCmp = this.template.querySelector(".searchCmp");
@@ -179,25 +178,12 @@ export default class LibraryCart extends NavigationMixin(LightningElement) {
   }
   LoadMoreBooks() {
     this.SpinnerOn = true;
-    GetThreeBooks({ OffsetVal: this.ShowingRecords - 3 })
-      .then((result) => {
-        result.forEach(element => {
-          this.initialRecords = [...this.initialRecords, element];
-        });
-
-        this.SpinnerOn = false;
-        this.error = undefined;
-      })
-      .catch((error) => {
-        this.SpinnerOn = false;
-        this.error = error;
-      });
     if (this.NumberOfTotalBooks <= this.ShowingRecords) {
       this.showmoreButton = false;
     }
   }
 
-  //search book by name using apex method
+  
 
   goToCart() {
 
