@@ -32,7 +32,18 @@
           style="margin-top:3%; margin-bottom:3% ; margin-left: 200px; margin-right: 200px;">
         </c-book-tile>
       </template>
-      <lightning-layout>
+    </div>
+    <c-bottom-comp
+    showbookcount={showBookCount}
+    showingrecords={ShowingRecords}
+    numberoftotalbooks={NumberOfTotalBooks}
+    showmorebutton={showmoreButton}
+    totalquantity={TotalQuantity}
+    totalprice={totalPrice}
+    onshowmore={ShowMoreRecords}
+    ongotocart={goToCart}>
+    </c-bottom-comp>
+      <!-- <lightning-layout>
         <lightning-layout-item size="5">
           <h2><b if:true={showBookCount}>Showing {ShowingRecords} of {NumberOfTotalBooks} Books</b></h2>
         </lightning-layout-item>
@@ -59,9 +70,9 @@
             </lightning-button>
           </div>
         </lightning-layout-item>
-      </lightning-layout>
-      <br><br>
-    </div>
+      </lightning-layout> 
+      <br><br> -->
+    
   </template>
 <template if:false={ShowFirstPage}>
   <c-cart-component  booklist={BookList} totalprice={totalPrice} totalquantity={TotalQuantity} selectedcontact={SelectedContact}  class="slds-show slds-is-relative">

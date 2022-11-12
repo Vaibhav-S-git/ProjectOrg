@@ -1,0 +1,31 @@
+<template>
+  <lightning-layout>
+    <lightning-layout-item size="5">
+      <h2><b if:true={showbookcount}>Showing {showingrecords} of {numberoftotalbooks} Books</b></h2>
+    </lightning-layout-item>
+
+    <lightning-layout-item>
+      <lightning-button if:true={showmorebutton} label="Show more" icon-name="utility:switch" icon-position="right"
+        variant="brand" onclick={ShowMoreRecords}>
+      </lightning-button>
+    </lightning-layout-item>
+  </lightning-layout>
+  <lightning-layout>
+    <lightning-layout-item>
+      <br><br>
+      <div class="slds-box  slds-theme_shade" style="width:250px; margin-left:500px">
+        <p>Total Selected Items : {totalquantity}</p>
+        <br>
+        <h1>TOTAL PRICE : {totalprice}</h1>
+      </div>
+    </lightning-layout-item>
+
+    <lightning-layout-item>
+      <div class="slds-var-p-left_medium">
+        <br><br><br><br>
+        <lightning-button label="Go To Cart" variant="brand" icon-name="utility:cart" onclick={goToCart}>
+        </lightning-button>
+      </div>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>
