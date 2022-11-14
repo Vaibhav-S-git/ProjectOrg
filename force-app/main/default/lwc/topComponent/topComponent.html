@@ -1,0 +1,20 @@
+<template>
+  <lightning-layout>
+    <lightning-layout-item size="2"></lightning-layout-item>
+    <lightning-layout-item size="4">
+      <lightning-combobox name="Contact" value={value} placeholder="Select any Student" options={AllContactFromApex}
+        onchange={handleTypeChange} style="width: 220px;">
+      </lightning-combobox>
+    </lightning-layout-item>
+    <lightning-layout-item size="3">
+      <lightning-input type="text" onchange={handleSearch} class="searchCmp" placeholder="Search Book..."
+        style="width:350px;"></lightning-input>
+    </lightning-layout-item>
+    <lightning-layout-item>
+      <br>
+      <lightning-button icon-name="utility:search" variant="brand" label="Search" icon-position="right"
+        onclick={handleClickSearch} class="slds-var-m-left_x-small">
+      </lightning-button>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>
