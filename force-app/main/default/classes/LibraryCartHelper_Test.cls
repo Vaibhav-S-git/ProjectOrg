@@ -22,7 +22,7 @@ public class LibraryCartHelper_Test {
         test.startTest();
         List<contact> con= LibraryCartHelper.getAllContact();
         test.stopTest();
-        system.assertEquals(2, Con.size());
+        system.assertEquals(2, Con.size(),'assertion error');
     }
     @istest
     public static void getAllBooks_test(){
@@ -33,9 +33,9 @@ public class LibraryCartHelper_Test {
         insert book2;
         insert book3;
         test.startTest();
-        List<Book__c> BookList=LibraryCartHelper.getAllBooks();
+        List<Book__c> bookList=LibraryCartHelper.getAllBooks();
         test.stopTest();
-        system.assertEquals(2, BookList.size());
+        system.assertEquals(2, BookList.size(),'assertion error');
     }
     @istest
     public static void SearchBooksByName_test(){
@@ -49,12 +49,12 @@ public class LibraryCartHelper_Test {
         insert book4;
         String searchText='Bname';
         test.startTest();
-        List<Book__c> BookList=LibraryCartHelper.SearchBooksByName(searchText);
+        List<Book__c> bookList=LibraryCartHelper.SearchBooksByName(searchText);
         searchText='Bname1';
-        List<Book__c> BookList2=LibraryCartHelper.SearchBooksByName(searchText);
+        List<Book__c> bookList2=LibraryCartHelper.SearchBooksByName(searchText);
         test.stopTest();
-        system.assertEquals(3, BookList.size());
-        system.assertEquals(2, BookList2.size());
+        system.assertEquals(3, BookList.size(),'assertion error');
+        system.assertEquals(2, BookList2.size(),'assertion error');
     }
     @istest
     public static void GetThreeBooks_test(){
@@ -74,8 +74,8 @@ public class LibraryCartHelper_Test {
         List<book__c> bookList1=LibraryCartHelper.GetThreeBooks(0);
         list<book__c> bookList2=LibraryCartHelper.GetThreeBooks(3);
         test.stopTest();
-        system.assertEquals('Bname1',bookList1[0].Name);
-        system.assertEquals('Bname4',bookList2[0].Name);        
+        system.assertEquals('Bname1',bookList1[0].Name,'assertion error');
+        system.assertEquals('Bname4',bookList2[0].Name,'assertion error');        
     }
     @istest
     Public static void GetNBooks_test(){
@@ -95,12 +95,12 @@ public class LibraryCartHelper_Test {
         List<book__c> bookList1=LibraryCartHelper.GetNBooks(5);
         List<book__c> bookList2=LibraryCartHelper.GetNBooks(7);
         test.stopTest();
-        system.assertEquals(5,bookList1.size());
-        system.assertEquals(6,bookList2.size());        
+        system.assertEquals(5,bookList1.size(),'assertion error');
+        system.assertEquals(6,bookList2.size(),'assertion error');        
     }
     @istest
     public static void CreateRecordsLwc_test(){
-        Contact Con=new Contact(LastName='Con1');
+        Contact con=new Contact(LastName='Con1');
         insert con;
         book__c book=new book__c(Name='Bname1',Code__c='b-4500',IsActive__c=true,UnitPrice__c=20,Quantity__c=10);
         insert book;
@@ -115,7 +115,7 @@ public class LibraryCartHelper_Test {
         LibraryCartHelper.CreateRecordsLwc(warapperList, con.Id);
         test.stopTest();
         order__c ord=[select id,Order_Amount__c from order__c];
-        system.assertEquals(100, ord.Order_Amount__c);
+        system.assertEquals(100, ord.Order_Amount__c,'assertion error');
     }
     
 }
