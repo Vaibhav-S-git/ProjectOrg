@@ -2,10 +2,17 @@
 public class Quantity_batch_test {
     @istest
     Public Static void Increase_value(){
-        Book__C book1=new book__C(Name='Bname1',Code__c='b-4500',Quantity__c=0, IsActive__c=true ,UnitPrice__c=20);
-        Book__C book2=new book__C(Name='Bname2',Code__c='b-4500',Quantity__c=0,IsActive__c=false,UnitPrice__c=20);
-        insert book1;
-        insert book2;
+        book__c book1=TestDataFactory.CreateBook('Bname1','b-4500');
+        book1.Quantity__c=0;
+        book1.UnitPrice__c=20;
+        book__c book2=TestDataFactory.CreateBook('Bname2','b-4600');
+        book2.Quantity__c=0;
+        book2.UnitPrice__c=20;
+        book2.IsActive__c=false;
+        list<book__c> listOfBooks= new List<book__c>();
+        listOfBooks.add(book1);
+        listOfBooks.add(book2);
+        insert listOfBooks;
         test.startTest();
         Quantity_batch batch = new Quantity_batch(5); 
         database.executeBatch(batch);
